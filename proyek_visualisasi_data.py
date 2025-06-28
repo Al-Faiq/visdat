@@ -7,27 +7,51 @@ import plotly.graph_objects as go
 # ======== Konfigurasi Halaman ========
 st.set_page_config(page_title="Visualisasi Data Kesehatan Mental di Industri Teknologi", layout="wide")
 
-# ======== Styling CSS ========
+# ======== Styling CSS Responsif Dark/Light Mode ========
 st.markdown("""
     <style>
     .stApp {
-        background: linear-gradient(to right, #e0f2f1, #ffffff);
         font-family: 'Segoe UI', sans-serif;
+        transition: background-color 0.5s, color 0.5s;
     }
-    h1, h2, h3, h4 {
-        color: #004d40;
+
+    /* Light Mode */
+    @media (prefers-color-scheme: light) {
+        .stApp {
+            background: linear-gradient(to right, #e0f2f1, #ffffff);
+            color: #004d40;
+        }
+        h1, h2, h3, h4 {
+            color: #004d40;
+        }
+        section[data-testid="stSidebar"] {
+            background-color: #004d40;
+        }
+        section[data-testid="stSidebar"] * {
+            color: white !important;
+        }
     }
-    /* Sidebar background dan teks */
-    section[data-testid="stSidebar"] {
-        background-color: #004d40;
-    }
-    section[data-testid="stSidebar"] * {
-        color: white !important;
+
+    /* Dark Mode */
+    @media (prefers-color-scheme: dark) {
+        .stApp {
+            background: linear-gradient(to right, #121212, #1e1e1e);
+            color: #e0f2f1;
+        }
+        h1, h2, h3, h4 {
+            color: #80cbc4;
+        }
+        section[data-testid="stSidebar"] {
+            background-color: #263238;
+        }
+        section[data-testid="stSidebar"] * {
+            color: #e0f2f1 !important;
+        }
     }
     </style>
 """, unsafe_allow_html=True)
 
-# ======== Sidebar Navigasi ========
+# ======== Sidebar ========
 st.sidebar.title("Dashboard")
 opsi = st.sidebar.radio(
     "Pilih halaman visualisasi:",
@@ -56,7 +80,7 @@ if opsi == "Home":
     Aplikasi ini menampilkan visualisasi data untuk membantu memahami isu ini lebih baik.
     """)
 
-# ======== Visualisasi 1 ========
+# ======== Visualisasi 1  dengan Teknik Bar Chart ========
 elif opsi == "Jumlah Responden per Negara":
     st.markdown("## Jumlah Responden per Negara")
     st.markdown("Visualisasi ini menunjukkan bahwa survei tentang kesehatan mental di bidang teknologi memiliki cakupan global, namun masih didominasi oleh negara-negara tertentu, terutama Amerika Serikat. Untuk mendapatkan gambaran yang lebih merata, penting untuk memperluas distribusi survei ke negara-negara lain dengan pendekatan multibahasa dan kampanye partisipatif yang inklusif.")
@@ -85,7 +109,7 @@ elif opsi == "Jumlah Responden per Negara":
         fig.update_layout(xaxis_tickangle=-90, height=600)
         st.plotly_chart(fig, use_container_width=True)
 
-# ======== Visualisasi 2 ========
+# ======== Visualisasi 2 dengan Teknik Histogram ========
 elif opsi == "Distribusi Usia Responden":
     st.markdown("## Distribusi Usia Responden")
     st.markdown("Distribusi usia responden mengindikasikan bahwa isu kesehatan mental di industri teknologi paling banyak dirasakan dan disuarakan oleh kalangan muda. Dengan demikian, intervensi atau dukungan terhadap kesehatan mental sebaiknya difokuskan pada kelompok usia ini, khususnya mereka yang sedang menjalani fase awal kehidupan profesionalnya.")
@@ -101,7 +125,7 @@ elif opsi == "Distribusi Usia Responden":
         fig.update_layout(height=500)
         st.plotly_chart(fig, use_container_width=True)
 
-# ======== Visualisasi 3 ========
+# ======== Visualisasi 3 dengan Teknik Scatter Plot ========
 elif opsi == "Usia vs Keputusan Mencari Pengobatan":
     st.markdown("## Usia vs Keputusan Mencari Pengobatan")
     st.markdown("Visualisasi ini menampilkan hubungan antara usia responden dan keputusan mereka untuk mencari pengobatan atas kondisi kesehatan mental.")
@@ -118,10 +142,10 @@ elif opsi == "Usia vs Keputusan Mencari Pengobatan":
                          height=500)
         st.plotly_chart(fig, use_container_width=True)
 
-# ======== Visualisasi 4 ========
+# ======== Visualisasi 4 Teknik Heatmap Korelasi ========
 elif opsi == "Heatmap Korelasi Usia & Pengobatan":
     st.markdown("## Korelasi Usia & Pengobatan")
-    st.markdown("visualisasi dapat dilihat bahwa kotak yang mewakili korelasi antara usia dan pengobatan berwarna merah gelap. Warna ini menandakan bahwa nilai korelasi antara kedua variabel sangat rendah atau mendekati nol. Artinya, tidak terdapat hubungan linear yang kuat antara usia responden dan keputusan mereka untuk mencari pengobatan.")
+    st.markdown("Visualisasi dapat dilihat bahwa kotak yang mewakili korelasi antara usia dan pengobatan berwarna merah gelap. Warna ini menandakan bahwa nilai korelasi antara kedua variabel sangat rendah atau mendekati nol. Artinya, tidak terdapat hubungan linear yang kuat antara usia responden dan keputusan mereka untuk mencari pengobatan.")
 
     with st.spinner("Memuat heatmap..."):
         np.random.seed(42)
@@ -141,7 +165,7 @@ elif opsi == "Heatmap Korelasi Usia & Pengobatan":
         fig.update_layout(title="Korelasi Usia & Pengobatan", height=400)
         st.plotly_chart(fig, use_container_width=True)
 
-# ======== Visualisasi 5 ========
+# ======== Visualisasi 5  Pie Chart Diagram Lingkaran ========
 elif opsi == "Distribusi Jenis Kelamin Responden":
     st.markdown("## Distribusi Jenis Kelamin Responden")
     st.markdown("Distribusi ini menunjukkan adanya ketimpangan gender dalam jumlah responden survei, dengan laki-laki sebagai kelompok mayoritas. Hal ini bisa menjadi pertimbangan penting dalam merancang pendekatan atau intervensi kesehatan mental yang lebih inklusif dan sensitif terhadap keragaman gender di industri teknologi.")
@@ -158,5 +182,3 @@ elif opsi == "Distribusi Jenis Kelamin Responden":
 # ======== Footer ========
 st.markdown("---")
 st.markdown("<center>Kelompok 5 - Visualisasi Data - Visualisasi Data Kesehatan Mental di Industri Teknologi - STT Terpadu Nurul Fikri</center>", unsafe_allow_html=True)
-
-
